@@ -1,6 +1,6 @@
 # Maldives Business Registry Scraper
 
-A crawler using crawlee-python to scrape business registry ( https://business.egov.mv/BusinessRegistry). 
+A crawler using crawlee-python to scrape business details from https://business.egov.mv/BusinessRegistry
 
 > This crawler is a WIP, however you can get a lot of structured data even now. Some cleanups and handling of pagination for businessnames, and so on are not yet implemented.
 
