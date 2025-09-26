@@ -1,8 +1,6 @@
 # Maldives Business Registry Scraper
 
-A crawler using crawlee-python to scrape business details from https://business.egov.mv/BusinessRegistry
-
-> This crawler is a WIP, however you can get a lot of structured data even now. Some cleanups and handling of pagination for businessnames, and so on are not yet implemented.
+A crawler to scrape business details from https://business.egov.mv/BusinessRegistry
 
 ### Output sample
 
@@ -60,7 +58,7 @@ A crawler using crawlee-python to scrape business details from https://business.
 
 ### Running this locally
 
-1. Install UV
+1. [Install UV](https://docs.astral.sh/uv/getting-started/installation/)
 2. `uv sync`
 3. `uv run python -m crawler`
 4. Inside a .env file define the following, replace the queries with your search queries
