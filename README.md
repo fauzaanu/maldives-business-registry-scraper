@@ -65,4 +65,4 @@ A crawler to scrape business details from https://business.egov.mv/BusinessRegis
 
 1. Install UV
 2. `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli brs "Investment"`
-3. (Replace Investment with any csv of search terms)
+3. (Replace Investment with any <comma_seperated_search_terms>)
