@@ -55,19 +55,6 @@ A crawler to scrape business details from https://business.egov.mv/BusinessRegis
   "full_html": ""
 }
 ```
-
-### Running this locally
-
-1. [Install UV](https://docs.astral.sh/uv/getting-started/installation/)
-2. `uv sync`
-3. `uv run python -m crawler`
-4. Inside a .env file define the following, replace the queries with your search queries
-
-```.env
-QUERIES="mart,ware,investment,capital"
-SEPERATOR=","
-```
-
 ### Installing CLI
 1. Install UV
 2. uv tool install git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli 
