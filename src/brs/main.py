@@ -10,16 +10,18 @@ from dotenv import load_dotenv
 from .routes import router
 
 
-async def main() -> None:
+async def main(queries: str) -> None:
     """The crawler entry point."""
+    if not queries:
+        raise Exception("No queries provided")
+
     async with Actor:
         crawler = HttpCrawler(
             request_handler=router,
             max_requests_per_crawl=None,
             http_client=HttpxHttpClient(),
         )
-        load_dotenv()
-        queries = os.getenv("QUERIES")
+
         crawlee_requests = []
         for query in queries.split(","):
             # Prepare a POST request to the form endpoint.
