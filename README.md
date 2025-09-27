@@ -68,7 +68,14 @@ QUERIES="mart,ware,investment,capital"
 SEPERATOR=","
 ```
 
-### Running on 
+### Installing CLI
+1. Install UV
+2. uv tool install git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli 
+3. From now on you can run this with `brs <comma_seperated_search_terms>`
 
-TBA
 
+### Running with UVX (one time runs/passing to an AI agent)
+
+1. Install UV
+2. `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli brs "Investment"`
+3. (Replace Investment with any csv of search terms)
