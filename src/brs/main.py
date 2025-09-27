@@ -1,3 +1,4 @@
+import csv
 import os
 from urllib.parse import urlencode
 from crawlee import Request
@@ -5,6 +6,7 @@ from crawlee import Request
 from apify import Actor
 from crawlee.crawlers import HttpCrawler
 from crawlee.http_clients import HttpxHttpClient
+from crawlee.storages import Dataset
 from dotenv import load_dotenv
 
 from .routes import router
@@ -40,4 +42,9 @@ async def main(queries: str) -> None:
 
         await crawler.run(
             crawlee_requests
+        )
+
+        await crawler.export_data_csv(
+            dataset_name="Businesses",
+            path="businesses.csv",
         )

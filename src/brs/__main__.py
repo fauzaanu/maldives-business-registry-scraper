@@ -17,6 +17,8 @@ def cli_main():
         nargs='?', 
         help='Comma-separated search queries (e.g., "company1,company2,company3")'
     )
+
+    # TODO: ADD ARG to conditionally add metadata
     
     args = parser.parse_args()
     

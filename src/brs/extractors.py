@@ -14,11 +14,11 @@ class BusinessRegistryExtractor:
     def extract_business_listings(self, html_content: str, source_url: str) -> List[Dict[str, Any]]:
         """
         Extract business listings from search results HTML.
-        
+
         Args:
             html_content: Raw HTML content from the response
             source_url: The URL that was crawled
-            
+
         Returns:
             List of business data dictionaries
         """
@@ -138,6 +138,8 @@ class BusinessRegistryExtractor:
         """
         Extract comprehensive business information from a business detail page.
         """
+        add_metadata = False
+        # TODO: See the todo in __main__
         try:
             selector = Selector(text=html_content)
             business_id = self._extract_business_id(source_url)
@@ -190,15 +192,15 @@ class BusinessRegistryExtractor:
                 # Permits and licenses
                 'permits': permits_info,
                 'licenses': licenses_info,
-
-                # Metadata
-                'domain': urlparse(source_url).netloc,
-                'page_title': selector.css('title::text').get(),
-                'html_length': len(html_content),
-
-                # full HTML as this is a WIP TODO: btw
-                'full_html': html_content,
             }
+            if add_metadata:
+                detail_data["metadata"] = {
+                    # Metadata
+                    'domain': urlparse(source_url).netloc,
+                    'page_title': selector.css('title::text').get(),
+                    'html_length': len(html_content),
+                    'full_html': html_content,
+                }
 
             return detail_data
 
@@ -398,35 +400,6 @@ class BusinessRegistryExtractor:
         }
 
 
-class DatasetManager:
-    """Manages saving extracted data to Crawlee datasets."""
-
-    @staticmethod
-    async def save_businesses(context: HttpCrawlingContext, businesses: List[Dict[str, Any]]) -> None:
-        """
-        Save business data to the default dataset.
-        
-        Args:
-            context: The crawling context
-            businesses: List of business data dictionaries
-        """
-        if not businesses:
-            context.log.info("No businesses to save")
-            return
-
-        # Add extraction timestamp
-        import datetime
-        extraction_time = datetime.datetime.utcnow().isoformat()
-
-        for business in businesses:
-            business['extracted_at'] = extraction_time
-
-            # Push to dataset
-            await context.push_data(business)
-
-        context.log.info(f"Saved {len(businesses)} businesses to dataset")
-
-
 class RichDataExtractor:
     """Enhanced extractor that combines multiple extraction strategies."""
 
@@ -449,10 +422,6 @@ class RichDataExtractor:
                 businesses = self.business_extractor.extract_business_listings(html_content, source_url)
                 if businesses:
                     context.log.info(f"Extracted {len(businesses)} businesses")
-                    # Try skipping the shortform datasets infavour of the detailed ones
-                    # await DatasetManager.save_businesses(context, businesses)
-                    sample = businesses[0]
-                    context.log.info(f"Sample: {sample.get('business_name')} - {sample.get('business_type')}")
                 else:
                     context.log.warning("No businesses extracted from search results")
 
@@ -460,7 +429,7 @@ class RichDataExtractor:
                 detail_data = self.business_extractor.extract_business_details(html_content, source_url)
                 if detail_data:
                     context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
-                    await context.push_data(detail_data, dataset_name=detail_data.get('business_name', 'Unknown'))
+                    await context.push_data(detail_data, dataset_name="Businesses", )
                 else:
                     context.log.warning("No detail data extracted")
             else:
