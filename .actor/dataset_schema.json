@@ -1,0 +1,230 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "business_id": {
+        "type": "string",
+        "description": "Unique identifier for the business"
+      },
+      "business_name": {
+        "type": "string",
+        "description": "Name of the business"
+      },
+      "business_type": {
+        "type": "string",
+        "description": "Type of business (Company, Sole Proprietorship, etc.)"
+      },
+      "status": {
+        "type": "string",
+        "description": "Registration status of the business"
+      },
+      "address": {
+        "type": "string",
+        "description": "Business address"
+      },
+      "registration_number": {
+        "type": "string",
+        "description": "Official registration number"
+      },
+      "upn": {
+        "type": "string",
+        "description": "Unique Personal Number"
+      },
+      "sme_classification": {
+        "type": "string",
+        "description": "SME classification status"
+      },
+      "managing_director": {
+        "type": "string",
+        "description": "Managing director name"
+      },
+      "owner": {
+        "type": "string",
+        "description": "Owner name (for sole proprietorships)"
+      },
+      "detail_url": {
+        "type": "string",
+        "description": "URL to the detailed business page"
+      },
+      "extracted_at": {
+        "type": "string",
+        "description": "Timestamp when data was extracted"
+      },
+      "board_of_directors": {
+        "type": "array",
+        "description": "List of board of directors"
+      },
+      "shareholders": {
+        "type": "array",
+        "description": "List of shareholders"
+      },
+      "business_names": {
+        "type": "array",
+        "description": "List of business names owned"
+      },
+      "business_activities": {
+        "type": "array",
+        "description": "List of business activities"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Business Registry Overview",
+      "description": "Overview of businesses scraped from Maldives Business Registry",
+      "transformation": {
+        "fields": [
+          "business_name",
+          "business_type",
+          "status",
+          "registration_number",
+          "address",
+          "managing_director",
+          "owner",
+          "sme_classification",
+          "business_activities",
+          "detail_url",
+          "extracted_at"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "business_name": {
+            "label": "Business Name",
+            "format": "text"
+          },
+          "business_type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "registration_number": {
+            "label": "Registration #",
+            "format": "text"
+          },
+          "address": {
+            "label": "Address",
+            "format": "text"
+          },
+          "managing_director": {
+            "label": "Managing Director",
+            "format": "text"
+          },
+          "owner": {
+            "label": "Owner",
+            "format": "text"
+          },
+          "sme_classification": {
+            "label": "SME Classification",
+            "format": "text"
+          },
+          "business_activities": {
+            "label": "Activities",
+            "format": "array"
+          },
+          "detail_url": {
+            "label": "Detail Page",
+            "format": "link"
+          },
+          "extracted_at": {
+            "label": "Extracted At",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "detailed": {
+      "title": "Detailed Business Information",
+      "description": "Complete business information including directors and shareholders",
+      "transformation": {
+        "fields": [
+          "business_name",
+          "business_type",
+          "status",
+          "registration_number",
+          "upn",
+          "address",
+          "managing_director",
+          "owner",
+          "sme_classification",
+          "board_of_directors",
+          "shareholders",
+          "business_names",
+          "business_activities",
+          "detail_url",
+          "extracted_at"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "business_name": {
+            "label": "Business Name",
+            "format": "text"
+          },
+          "business_type": {
+            "label": "Type",
+            "format": "text"
+          },
+          "status": {
+            "label": "Status",
+            "format": "text"
+          },
+          "registration_number": {
+            "label": "Registration #",
+            "format": "text"
+          },
+          "upn": {
+            "label": "UPN",
+            "format": "text"
+          },
+          "address": {
+            "label": "Address",
+            "format": "text"
+          },
+          "managing_director": {
+            "label": "Managing Director",
+            "format": "text"
+          },
+          "owner": {
+            "label": "Owner",
+            "format": "text"
+          },
+          "sme_classification": {
+            "label": "SME Classification",
+            "format": "text"
+          },
+          "board_of_directors": {
+            "label": "Board of Directors",
+            "format": "array"
+          },
+          "shareholders": {
+            "label": "Shareholders",
+            "format": "array"
+          },
+          "business_names": {
+            "label": "Business Names",
+            "format": "array"
+          },
+          "business_activities": {
+            "label": "Business Activities",
+            "format": "array"
+          },
+          "detail_url": {
+            "label": "Detail Page",
+            "format": "link"
+          },
+          "extracted_at": {
+            "label": "Extracted At",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}
