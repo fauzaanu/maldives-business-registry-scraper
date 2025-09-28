@@ -47,10 +47,19 @@ def cli_main():
         nargs='?', 
         help='Comma-separated search queries (e.g., "company1,company2,company3")'
     )
+    parser.add_argument(
+        '--apify', 
+        action='store_true',
+        help='Run in Apify mode (used internally by Apify platform)'
+    )
 
     # TODO: ADD ARG to conditionally add metadata
     
     args = parser.parse_args()
+    
+    if args.apify:
+        asyncio.run(apify_main())
+        return
     
     # args take priority over ENV
     queries = args.queries or os.getenv("QUERIES")
@@ -65,9 +74,4 @@ def cli_main():
 
 
 if __name__ == '__main__':
-    # Simple check: if we have command line arguments, use CLI mode
-    # Otherwise, assume we're running on Apify platform
-    if len(sys.argv) > 1:
-        cli_main()
-    else:
-        asyncio.run(apify_main())
+    cli_main()

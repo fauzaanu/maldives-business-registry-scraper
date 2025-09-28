@@ -36,4 +36,4 @@ RUN python -m compileall -q .
 RUN uv tool install .
 
 # Specify how to launch the source code of your Actor.
-CMD ["brs"]
+CMD ["brs", "--apify"]
