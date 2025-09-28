@@ -211,9 +211,9 @@ wheels = [
 ]
 
 [[package]]
-name = "business-registry-scraper"
-version = "0.0.1"
-source = { virtual = "." }
+name = "brs"
+version = "1.0.0"
+source = { editable = "." }
 dependencies = [
     { name = "apify" },
     { name = "crawlee", extra = ["parsel"] },

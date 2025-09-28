@@ -1,3 +1,4 @@
+import csv
 import os
 from urllib.parse import urlencode
 from crawlee import Request
@@ -5,21 +6,24 @@ from crawlee import Request
 from apify import Actor
 from crawlee.crawlers import HttpCrawler
 from crawlee.http_clients import HttpxHttpClient
+from crawlee.storages import Dataset
 from dotenv import load_dotenv
 
 from .routes import router
 
 
-async def main() -> None:
+async def main(queries: str) -> None:
     """The crawler entry point."""
+    if not queries:
+        raise Exception("No queries provided")
+
     async with Actor:
         crawler = HttpCrawler(
             request_handler=router,
             max_requests_per_crawl=None,
             http_client=HttpxHttpClient(),
         )
-        load_dotenv()
-        queries = os.getenv("QUERIES")
+
         crawlee_requests = []
         for query in queries.split(","):
             # Prepare a POST request to the form endpoint.
@@ -38,4 +42,9 @@ async def main() -> None:
 
         await crawler.run(
             crawlee_requests
+        )
+
+        await crawler.export_data_csv(
+            dataset_name="Businesses",
+            path="businesses.csv",
         )
