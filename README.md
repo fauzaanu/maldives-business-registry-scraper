@@ -4,7 +4,7 @@
 
 A crawler to scrape business details from https://business.egov.mv/BusinessRegistry. 
 
-Make sure you have [UV Installed](https://docs.astral.sh/uv/getting-started/installation/), and run `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli brs "Business one, Business two, Business three"` and get a detailed csv export file at the very end ("businesses.csv"). 
+Make sure you have [UV Installed](https://docs.astral.sh/uv/getting-started/installation/), and run `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git brs "Business one, Business two, Business three"` and get a detailed csv export file at the very end ("businesses.csv"). 
 
 If you choose to [install](#Installing-CLI) the command is as short as running `brs "<comma_seperated_search_terms>"`
 
@@ -26,11 +26,11 @@ You may also run this as an [actor on the APIFY Platform](https://apify.com/fauz
 ### Installing CLI (Local Development)
 
 1. Install UV
-2. `uv tool install git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli`
+2. `uv tool install git+https://github.com/fauzaanu/maldives-business-registry-scraper.git`
 3. From now on you can run this with `brs <comma_seperated_search_terms>`
 
 ### Running with UVX (One-time Use)
 
 1. Install UV
-2. `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli brs "<comma_seperated_search_terms>"`
+2. `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git brs "<comma_seperated_search_terms>"`
 3. (Replace Investment with any <comma_seperated_search_terms>)
