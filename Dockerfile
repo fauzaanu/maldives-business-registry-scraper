@@ -34,4 +34,4 @@ COPY . ./
 RUN python -m compileall -q .
 
 # Specify how to launch the source code of your Actor.
-CMD ["python", "-m", "brs"]
+CMD ["brs"]
