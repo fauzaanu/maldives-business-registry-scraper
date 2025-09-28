@@ -16,8 +16,6 @@ async def main(queries: str, max_requests: int = None) -> None:
     """The crawler entry point."""
     if not queries:
         raise Exception("No queries provided")
-
-    async with Actor:
         crawler = HttpCrawler(
             request_handler=router,
             max_requests_per_crawl=max_requests,

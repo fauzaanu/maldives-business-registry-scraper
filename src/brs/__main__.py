@@ -9,36 +9,8 @@ from apify import Actor
 from .main import main
 
 
-async def apify_main():
-    """Entry point for Apify actor."""
-    async with Actor:
-        # Get input from Apify
-        actor_input = await Actor.get_input() or {}
-        
-        # Extract queries from input
-        queries_list = actor_input.get('queries', [])
-        max_requests = actor_input.get('maxRequestsPerCrawl')
-        
-        if not queries_list:
-            Actor.log.error('No queries provided in input!')
-            await Actor.fail('No queries provided. Please specify business names to search for.')
-            return
-        
-        # Convert list to comma-separated string for existing main function
-        queries = ','.join(queries_list)
-        
-        Actor.log.info(f'Starting scraper with queries: {queries}')
-        if max_requests:
-            Actor.log.info(f'Max requests per crawl: {max_requests}')
-        
-        # Use existing main function
-        await main(queries, max_requests)
-        
-        Actor.log.info('Scraper completed successfully!')
-
-
-def cli_main():
-    """Entry point for the crawler CLI."""
+async def main():
+    """Main entry point that handles both CLI and Apify modes."""
     load_dotenv()
     
     parser = argparse.ArgumentParser(description='Run the business registry crawler')
@@ -52,26 +24,43 @@ def cli_main():
         action='store_true',
         help='Run in Apify mode (used internally by Apify platform)'
     )
-
-    # TODO: ADD ARG to conditionally add metadata
     
     args = parser.parse_args()
     
-    if args.apify:
-        asyncio.run(apify_main())
-        return
-    
-    # args take priority over ENV
-    queries = args.queries or os.getenv("QUERIES")
-    
-    if not queries:
-        print("Error: No queries provided. Use either:")
-        print("  uv run python -m crawler 'query1,query2,query3'")
-        print("  or set QUERIES environment variable")
-        exit(1)
-    
-    asyncio.run(main(queries))
+    async with Actor:
+        if args.apify:
+            # Apify mode - get input from Apify platform
+            actor_input = await Actor.get_input() or {}
+            queries_list = actor_input.get('queries', [])
+            max_requests = actor_input.get('maxRequestsPerCrawl')
+            
+            if not queries_list:
+                Actor.log.error('No queries provided in input!')
+                await Actor.fail('No queries provided. Please specify business names to search for.')
+                return
+            
+            queries = ','.join(queries_list)
+            Actor.log.info(f'Starting scraper with queries: {queries}')
+            if max_requests:
+                Actor.log.info(f'Max requests per crawl: {max_requests}')
+        else:
+            # CLI mode - get queries from arguments or environment
+            queries = args.queries or os.getenv("QUERIES")
+            max_requests = None
+            
+            if not queries:
+                print("Error: No queries provided. Use either:")
+                print("  uv run python -m crawler 'query1,query2,query3'")
+                print("  or set QUERIES environment variable")
+                exit(1)
+        
+        # Import and call the crawler main function
+        from .main import main as crawler_main
+        await crawler_main(queries, max_requests)
+        
+        if args.apify:
+            Actor.log.info('Scraper completed successfully!')
 
 
 if __name__ == '__main__':
-    cli_main()
+    asyncio.run(main())
