@@ -33,5 +33,7 @@ COPY . ./
 # Use compileall to ensure the runnability of the Actor Python code.
 RUN python -m compileall -q .
 
+RUN uv tool install .
+
 # Specify how to launch the source code of your Actor.
 CMD ["brs"]
