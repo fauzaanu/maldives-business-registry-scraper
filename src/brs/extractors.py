@@ -434,6 +434,7 @@ class RichDataExtractor:
                     detail_data['extracted_at'] = datetime.datetime.utcnow().isoformat()
                     context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
                     await Actor.push_data(detail_data)
+                    # await context.push_data(detail_data)
                 else:
                     context.log.warning("No detail data extracted")
             else:

@@ -43,7 +43,12 @@ async def main(queries: str, max_requests: int = None) -> None:
         crawlee_requests
     )
 
-    await crawler.export_data_csv(
-        dataset_name="Businesses",
-        path="businesses.csv",
-    )
+    dataset = await Dataset.open()
+    data_page = await dataset.get_data()
+    items = data_page.items
+    
+    if items:
+        with open("businesses.csv", "w", newline="", encoding="utf-8") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=items[0].keys())
+            writer.writeheader()
+            writer.writerows(items)
