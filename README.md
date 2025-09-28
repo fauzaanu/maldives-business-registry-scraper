@@ -8,7 +8,7 @@ Make sure you have [UV Installed](https://docs.astral.sh/uv/getting-started/inst
 
 If you choose to [install](#Installing-CLI) the command is as short as running `brs "<comma_seperated_search_terms>"`
 
-You may also run this as an [actor on the APIFY Platform](https://apify.com/fauzaanu/maldives-business-registry-scraper)
+You may also run this as an [actor on the Apify Platform](https://apify.com/fauzaanu/maldives-business-registry-scraper)
 
 ## Use cases
 
