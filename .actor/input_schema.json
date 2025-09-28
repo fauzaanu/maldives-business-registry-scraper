@@ -9,16 +9,9 @@
       "type": "array",
       "description": "List of business names or keywords to search for in the Maldives Business Registry",
       "editor": "stringList",
-      "items": {
-        "type": "string",
-        "title": "Search Query"
-      },
+      "placeholderValue": "Enter business name or keyword",
       "minItems": 1,
-      "default": [
-        "investment",
-        "capital",
-        "mart"
-      ]
+      "prefill": ["investment", "capital", "mart"]
     },
     "maxRequestsPerCrawl": {
       "title": "Max Requests Per Crawl",
@@ -28,7 +21,5 @@
       "default": 1000
     }
   },
-  "required": [
-    "queries"
-  ]
+  "required": ["queries"]
 }
