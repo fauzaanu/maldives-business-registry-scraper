@@ -23,6 +23,13 @@ async def default_handler(context: HttpCrawlingContext) -> None:
         html_content = context.http_response.read().decode('utf-8')
         businesses = business_extractor.extract_business_listings(html_content, str(context.request.url))
         
+        # Save search results to dataset as well
+        if businesses:
+            import datetime
+            for business in businesses:
+                business['extracted_at'] = datetime.datetime.utcnow().isoformat()
+                await context.push_data(business, dataset_name="Businesses")
+        
         detail_urls = [b['detail_url'] for b in businesses if b.get('detail_url')]
         if detail_urls:
             context.log.info(f"Enqueueing {len(detail_urls)} detail pages")

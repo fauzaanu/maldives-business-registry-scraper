@@ -428,8 +428,10 @@ class RichDataExtractor:
             elif '/ViewDetails/' in source_url:
                 detail_data = self.business_extractor.extract_business_details(html_content, source_url)
                 if detail_data:
+                    import datetime
+                    detail_data['extracted_at'] = datetime.datetime.utcnow().isoformat()
                     context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
-                    await context.push_data(detail_data, dataset_name="Businesses", )
+                    await context.push_data(detail_data, dataset_name="Businesses")
                 else:
                     context.log.warning("No detail data extracted")
             else:

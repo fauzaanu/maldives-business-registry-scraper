@@ -20,14 +20,35 @@ If you choose to [install](#Installing-CLI) the command is as short as running `
 | 220307 | https://business.egov.mv/BusinessRegistry/ViewDetails/220307?key=-4291927 | business_detail |  | edrova Pvt Ltd | Company | Boduvelu Avah. Muiythoshige L. Maavah, Maldives | C12522023 | Registered | 2023PV10023A | Not an SME |  | Ahmed Javaad | [{'name': 'Ahmed Javaad', 'appointed_date': '21-Aug-2023'}, {'name': 'Fauzaan Gasim', 'appointed_date': '21-Aug-2023'}] | 2 | [{'name': 'Fauzaan Gasim', 'join_date': '21-Aug-2023'}, {'name': 'Ahmed Javaad', 'join_date': '21-Aug-2023'}] | 2 | [{'name': 'lessonfuse', 'number': 'BN47822023', 'upn': 'BN20231027120C'}, {'name': 'EDZET', 'number': 'BN23202024', 'upn': 'BN20240530640H'}] | 2 | [{'number': 'BP82052023', 'activity_description': '854901 Education that is not definable by level', 'state': 'Issued', 'issued_date': '26-Feb-2024', 'expiry_date': '', 'business_name': '', 'address': 'Boduvelu Avah. Muiythoshige, L. Maavah, Maldives, L. Maavah, Rahdhebai Magu 15071, L. Maavah, Maldives'}, {'number': 'BP37042024', 'activity_description': '854901 Education that is not definable by level', 'state': 'Issued', 'issued_date': '17-May-2024', 'expiry_date': '', 'business_name': '', 'address': 'Muiythoshige, L.Maavah,Maldives, Rahdhebai Magu 15071, L. Maavah, Maldives'}] | 2 | {'has_permits': False, 'message': 'Does not have any business permit owned by edrova Pvt Ltd', 'permits_list': []} | {'has_licenses': False, 'message': 'Does not have any business license owned by edrova Pvt Ltd', 'licenses_list': []} |
 
 
-### Installing CLI
+## Deployment Options
+
+### Apify Platform (Recommended for Scale)
+
+This scraper is ready for deployment on the Apify platform for scalable, cloud-based scraping:
+
+1. **Deploy using Apify CLI**:
+   ```bash
+   apify login
+   apify push
+   ```
+
+2. **Input Format**: Use the Apify Console to provide input as JSON:
+   ```json
+   {
+     "queries": ["investment", "capital", "mart", "hotel"],
+     "maxRequestsPerCrawl": 1000
+   }
+   ```
+
+3. **Output**: All data is automatically saved to Apify dataset and can be exported as CSV, JSON, or other formats.
+
+### Installing CLI (Local Development)
 
 1. Install UV
 2. `uv tool install git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli`
 3. From now on you can run this with `brs <comma_seperated_search_terms>`
 
-
-### Running with UVX
+### Running with UVX (One-time Use)
 
 1. Install UV
 2. `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git@cli brs "<comma_seperated_search_terms>"`

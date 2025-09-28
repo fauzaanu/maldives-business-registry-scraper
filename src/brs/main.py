@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from .routes import router
 
 
-async def main(queries: str) -> None:
+async def main(queries: str, max_requests: int = None) -> None:
     """The crawler entry point."""
     if not queries:
         raise Exception("No queries provided")
@@ -20,7 +20,7 @@ async def main(queries: str) -> None:
     async with Actor:
         crawler = HttpCrawler(
             request_handler=router,
-            max_requests_per_crawl=None,
+            max_requests_per_crawl=max_requests,
             http_client=HttpxHttpClient(),
         )
 

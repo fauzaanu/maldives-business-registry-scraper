@@ -1,7 +1,9 @@
 {
 	"actorSpecification": 1,
 	"name": "maldives-business-registry-actor",
-	"version": "0.0",
+	"version": "1.0.0",
 	"buildTag": "latest",
-	"environmentVariables": {}
+	"environmentVariables": {},
+	"dockerfile": "./Dockerfile",
+	"input": "./input_schema.json"
 }

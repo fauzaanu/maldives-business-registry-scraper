@@ -3,8 +3,37 @@ import asyncio
 import os
 
 from dotenv import load_dotenv
+from apify import Actor
 
 from .main import main
+
+
+async def apify_main():
+    """Entry point for Apify actor."""
+    async with Actor:
+        # Get input from Apify
+        actor_input = await Actor.get_input() or {}
+        
+        # Extract queries from input
+        queries_list = actor_input.get('queries', [])
+        max_requests = actor_input.get('maxRequestsPerCrawl')
+        
+        if not queries_list:
+            Actor.log.error('No queries provided in input!')
+            await Actor.fail('No queries provided. Please specify business names to search for.')
+            return
+        
+        # Convert list to comma-separated string for existing main function
+        queries = ','.join(queries_list)
+        
+        Actor.log.info(f'Starting scraper with queries: {queries}')
+        if max_requests:
+            Actor.log.info(f'Max requests per crawl: {max_requests}')
+        
+        # Use existing main function
+        await main(queries, max_requests)
+        
+        Actor.log.info('Scraper completed successfully!')
 
 
 def cli_main():
@@ -34,5 +63,18 @@ def cli_main():
     asyncio.run(main(queries))
 
 
+def detect_environment():
+    """Detect if running in Apify or CLI environment."""
+    # Check for Apify environment variables
+    if os.getenv('APIFY_ACTOR_ID') or os.getenv('APIFY_TOKEN') or os.getenv('APIFY_IS_AT_HOME'):
+        return 'apify'
+    return 'cli'
+
+
 if __name__ == '__main__':
-    cli_main()
+    env = detect_environment()
+    
+    if env == 'apify':
+        asyncio.run(apify_main())
+    else:
+        cli_main()

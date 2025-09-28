@@ -1,0 +1,11 @@
+{
+  "queries": [
+    "investment",
+    "capital",
+    "mart",
+    "hotel",
+    "restaurant",
+    "construction"
+  ],
+  "maxRequestsPerCrawl": 1000
+}
