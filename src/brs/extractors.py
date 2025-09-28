@@ -433,8 +433,7 @@ class RichDataExtractor:
                     import datetime
                     detail_data['extracted_at'] = datetime.datetime.utcnow().isoformat()
                     context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
-                    dataset = await Actor.open_dataset(name="Businesses")
-                    await dataset.push_data(detail_data)
+                    await Actor.push_data(detail_data)
                 else:
                     context.log.warning("No detail data extracted")
             else:
@@ -443,8 +442,7 @@ class RichDataExtractor:
         except Exception as e:
             context.log.error(f"Error during data extraction: {e}")
             import datetime
-            dataset = await Actor.open_dataset(name="Businesses")
-            await dataset.push_data({
+            await Actor.push_data({
                 'error': str(e),
                 'url': str(context.request.url),
                 'extracted_at': datetime.datetime.utcnow().isoformat()
