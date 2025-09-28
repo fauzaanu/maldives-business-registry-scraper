@@ -1,11 +1,34 @@
 {
-  "queries": [
-    "investment",
-    "capital",
-    "mart",
-    "hotel",
-    "restaurant",
-    "construction"
-  ],
-  "maxRequestsPerCrawl": 1000
+  "title": "Maldives Business Registry Scraper",
+  "description": "Input schema for scraping business details from Maldives Business Registry",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "queries": {
+      "title": "Business Search Queries",
+      "type": "array",
+      "description": "List of business names or keywords to search for in the Maldives Business Registry",
+      "editor": "stringList",
+      "items": {
+        "type": "string",
+        "title": "Search Query"
+      },
+      "minItems": 1,
+      "default": [
+        "investment",
+        "capital",
+        "mart"
+      ]
+    },
+    "maxRequestsPerCrawl": {
+      "title": "Max Requests Per Crawl",
+      "type": "integer",
+      "description": "Maximum number of requests to process (leave empty for unlimited)",
+      "minimum": 1,
+      "default": 1000
+    }
+  },
+  "required": [
+    "queries"
+  ]
 }
