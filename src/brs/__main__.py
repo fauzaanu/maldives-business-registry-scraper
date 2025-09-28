@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import os
+import sys
 
 from dotenv import load_dotenv
 from apify import Actor
@@ -63,18 +64,10 @@ def cli_main():
     asyncio.run(main(queries))
 
 
-def detect_environment():
-    """Detect if running in Apify or CLI environment."""
-    # Check for Apify environment variables
-    if os.getenv('APIFY_ACTOR_ID') or os.getenv('APIFY_TOKEN') or os.getenv('APIFY_IS_AT_HOME'):
-        return 'apify'
-    return 'cli'
-
-
 if __name__ == '__main__':
-    env = detect_environment()
-    
-    if env == 'apify':
-        asyncio.run(apify_main())
-    else:
+    # Simple check: if we have command line arguments, use CLI mode
+    # Otherwise, assume we're running on Apify platform
+    if len(sys.argv) > 1:
         cli_main()
+    else:
+        asyncio.run(apify_main())
