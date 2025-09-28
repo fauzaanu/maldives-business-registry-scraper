@@ -1,71 +1,88 @@
 {
   "actorSpecification": 1,
   "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "additionalProperties": true,
     "properties": {
       "business_id": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Unique identifier for the business"
       },
       "business_name": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Name of the business"
       },
       "business_type": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Type of business (Company, Sole Proprietorship, etc.)"
       },
       "status": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Registration status of the business"
       },
       "address": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Business address"
       },
       "registration_number": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Official registration number"
       },
       "upn": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Unique Personal Number"
       },
       "sme_classification": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "SME classification status"
       },
       "managing_director": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Managing director name"
       },
       "owner": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Owner name (for sole proprietorships)"
       },
       "detail_url": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "URL to the detailed business page"
       },
       "extracted_at": {
-        "type": ["string", "null"],
+        "type": "string",
+        "nullable": true,
         "description": "Timestamp when data was extracted"
       },
       "board_of_directors": {
-        "type": ["array", "null"],
+        "type": "array",
+        "nullable": true,
         "description": "List of board of directors"
       },
       "shareholders": {
-        "type": ["array", "null"],
+        "type": "array",
+        "nullable": true,
         "description": "List of shareholders"
       },
       "business_names": {
-        "type": ["array", "null"],
+        "type": "array",
+        "nullable": true,
         "description": "List of business names owned"
       },
       "business_activities": {
-        "type": ["array", "null"],
+        "type": "array",
+        "nullable": true,
         "description": "List of business activities"
       }
     }
