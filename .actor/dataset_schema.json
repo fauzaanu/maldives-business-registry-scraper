@@ -2,69 +2,70 @@
   "actorSpecification": 1,
   "fields": {
     "type": "object",
+    "additionalProperties": true,
     "properties": {
       "business_id": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Unique identifier for the business"
       },
       "business_name": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Name of the business"
       },
       "business_type": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Type of business (Company, Sole Proprietorship, etc.)"
       },
       "status": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Registration status of the business"
       },
       "address": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Business address"
       },
       "registration_number": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Official registration number"
       },
       "upn": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Unique Personal Number"
       },
       "sme_classification": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "SME classification status"
       },
       "managing_director": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Managing director name"
       },
       "owner": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Owner name (for sole proprietorships)"
       },
       "detail_url": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "URL to the detailed business page"
       },
       "extracted_at": {
-        "type": "string",
+        "type": ["string", "null"],
         "description": "Timestamp when data was extracted"
       },
       "board_of_directors": {
-        "type": "array",
+        "type": ["array", "null"],
         "description": "List of board of directors"
       },
       "shareholders": {
-        "type": "array",
+        "type": ["array", "null"],
         "description": "List of shareholders"
       },
       "business_names": {
-        "type": "array",
+        "type": ["array", "null"],
         "description": "List of business names owned"
       },
       "business_activities": {
-        "type": "array",
+        "type": ["array", "null"],
         "description": "List of business activities"
       }
     }
