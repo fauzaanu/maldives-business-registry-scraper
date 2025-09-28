@@ -3,6 +3,8 @@ from typing import Dict, List, Optional, Any
 from urllib.parse import urljoin, urlparse
 from parsel import Selector
 from crawlee.crawlers import HttpCrawlingContext
+from apify import Actor
+from crawlee.storages import Dataset
 
 
 class BusinessRegistryExtractor:
@@ -431,7 +433,8 @@ class RichDataExtractor:
                     import datetime
                     detail_data['extracted_at'] = datetime.datetime.utcnow().isoformat()
                     context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
-                    await context.push_data(detail_data, dataset_name="Businesses")
+                    dataset = await Actor.open_dataset(name="Businesses")
+                    await dataset.push_data(detail_data)
                 else:
                     context.log.warning("No detail data extracted")
             else:
@@ -440,9 +443,9 @@ class RichDataExtractor:
         except Exception as e:
             context.log.error(f"Error during data extraction: {e}")
             import datetime
-            await context.push_data({
+            dataset = await Actor.open_dataset(name="Businesses")
+            await dataset.push_data({
                 'error': str(e),
                 'url': str(context.request.url),
-                # 'raw_html': html_content[:1000],
                 'extracted_at': datetime.datetime.utcnow().isoformat()
             })
