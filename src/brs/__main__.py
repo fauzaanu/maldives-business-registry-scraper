@@ -22,6 +22,11 @@ async def main():
         action='store_true',
         help='Run in Apify mode (used internally by Apify platform)'
     )
+    parser.add_argument(
+        '--exact-match-only',
+        action='store_true',
+        help='Only save businesses that exactly match the search queries'
+    )
     
     args = parser.parse_args()
     
@@ -31,6 +36,7 @@ async def main():
             actor_input = await Actor.get_input() or {}
             queries_list = actor_input.get('queries', [])
             max_requests = actor_input.get('maxRequestsPerCrawl')
+            exact_match_only = actor_input.get('exactMatchOnly', False)
             
             if not queries_list:
                 Actor.log.error('No queries provided in input!')
@@ -46,6 +52,8 @@ async def main():
             print("Running in CLI Mode . . ")
             queries = args.queries or os.getenv("QUERIES")
             max_requests = None
+            exact_match_only = args.exact_match_only
+            queries_list = [q.strip() for q in queries.split(",")] if queries else []
             
             if not queries:
                 print("Error: No queries provided. Use either:")
@@ -55,7 +63,10 @@ async def main():
         
         # Import and call the crawler main function
         from .main import main as crawler_main
-        await crawler_main(queries, max_requests)
+        if args.apify:
+            await crawler_main(queries, max_requests, exact_match_only, queries_list)
+        else:
+            await crawler_main(queries, max_requests, exact_match_only, queries_list)
         
         if args.apify:
             Actor.log.info('Scraper completed successfully!')

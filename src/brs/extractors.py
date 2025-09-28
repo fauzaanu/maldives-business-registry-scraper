@@ -407,11 +407,44 @@ class RichDataExtractor:
 
     def __init__(self):
         self.business_extractor = BusinessRegistryExtractor()
+    
+    def _is_exact_match(self, detail_data: Dict[str, Any], exact_queries: List[str]) -> bool:
+        """
+        Check if the business name exactly matches one of the requested queries.
+        
+        Args:
+            detail_data: The extracted business detail data
+            exact_queries: List of exact business names to match against
+            
+        Returns:
+            True if business name exactly matches one of the queries, False otherwise
+        """
+        business_name = detail_data.get('business_name', '').strip()
+        if not business_name:
+            return False
+        
+        # Check for exact matches (case-insensitive)
+        for query in exact_queries:
+            if business_name.lower() == query.strip().lower():
+                return True
+        
+        # Also check business names from the business_names array if available
+        business_names = detail_data.get('business_names', [])
+        for name_entry in business_names:
+            if isinstance(name_entry, dict) and 'name' in name_entry:
+                name = name_entry['name'].strip()
+                for query in exact_queries:
+                    if name.lower() == query.strip().lower():
+                        return True
+        
+        return False
 
-    async def extract_and_save(self, context: HttpCrawlingContext) -> None:
+    async def extract_and_save(self, context: HttpCrawlingContext, exact_match_config: dict = None) -> None:
         """
         Main extraction method that processes the response and saves rich data.
         """
+        if exact_match_config is None:
+            exact_match_config = {}
         try:
             # Get HTML content
             html_content = context.http_response.read().decode('utf-8')
@@ -432,9 +465,25 @@ class RichDataExtractor:
                 if detail_data:
                     import datetime
                     detail_data['extracted_at'] = datetime.datetime.utcnow().isoformat()
-                    context.log.info(f"Extracted detailed data for: {detail_data.get('business_name', 'Unknown')}")
-                    await Actor.push_data(detail_data)
-                    # await context.push_data(detail_data)
+                    
+                    # Get exact match settings
+                    exact_match_only = exact_match_config.get('exact_match_only', False)
+                    exact_queries = exact_match_config.get('exact_queries', [])
+                    business_name = detail_data.get('business_name', 'Unknown')
+                    
+                    # Check for exact match if enabled
+                    should_save = True
+                    if exact_match_only:
+                        should_save = self._is_exact_match(detail_data, exact_queries)
+                        context.log.info(f"EXACT MATCH CHECK: Business '{business_name}' - Exact match enabled: {exact_match_only} - Is exact match: {should_save}")
+                    else:
+                        context.log.info(f"EXACT MATCH CHECK: Business '{business_name}' - Exact match enabled: {exact_match_only} - Saving all results")
+                    
+                    if should_save:
+                        context.log.info(f"SAVING: Extracted detailed data for: {business_name}")
+                        await Actor.push_data(detail_data)
+                    else:
+                        context.log.info(f"SKIPPING: '{business_name}' - not an exact match")
                 else:
                     context.log.warning("No detail data extracted")
             else:

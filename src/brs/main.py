@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from .routes import router
 
 
-async def main(queries: str, max_requests: int = None) -> None:
+async def main(queries: str, max_requests: int = None, exact_match_only: bool = False, queries_list: list = None) -> None:
     """The crawler entry point."""
     if not queries:
         raise Exception("No queries provided")
@@ -22,6 +22,12 @@ async def main(queries: str, max_requests: int = None) -> None:
         max_requests_per_crawl=max_requests,
         http_client=HttpxHttpClient(),
     )
+
+    # Store exact match configuration in request user_data
+    exact_match_config = {
+        'exact_match_only': exact_match_only,
+        'exact_queries': queries_list or [q.strip() for q in queries.split(",")]
+    }
 
     crawlee_requests = []
     for query in queries.split(","):
@@ -36,6 +42,7 @@ async def main(queries: str, max_requests: int = None) -> None:
                     'query': f'{query}',
                 }
             ).encode(),
+            user_data=exact_match_config
         )
         crawlee_requests.append(request)
 

@@ -19,6 +19,12 @@
       "description": "Maximum number of requests to process (leave empty for unlimited)",
       "minimum": 1,
       "default": 1000
+    },
+    "exactMatchOnly": {
+      "title": "Exact Match Only",
+      "type": "boolean",
+      "description": "If enabled, only businesses whose names exactly match the search queries will be saved to the dataset",
+      "default": false
     }
   },
   "required": ["queries"]
