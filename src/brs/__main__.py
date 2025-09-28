@@ -6,8 +6,6 @@ import sys
 from dotenv import load_dotenv
 from apify import Actor
 
-from .main import main
-
 
 async def main():
     """Main entry point that handles both CLI and Apify modes."""
@@ -45,6 +43,7 @@ async def main():
                 Actor.log.info(f'Max requests per crawl: {max_requests}')
         else:
             # CLI mode - get queries from arguments or environment
+            print("Running in CLI Mode . . ")
             queries = args.queries or os.getenv("QUERIES")
             max_requests = None
             
@@ -62,5 +61,10 @@ async def main():
             Actor.log.info('Scraper completed successfully!')
 
 
-if __name__ == '__main__':
+def cli_main():
+    """Sync wrapper for CLI entry point."""
     asyncio.run(main())
+
+
+if __name__ == '__main__':
+    cli_main()

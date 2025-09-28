@@ -16,33 +16,34 @@ async def main(queries: str, max_requests: int = None) -> None:
     """The crawler entry point."""
     if not queries:
         raise Exception("No queries provided")
-        crawler = HttpCrawler(
-            request_handler=router,
-            max_requests_per_crawl=max_requests,
-            http_client=HttpxHttpClient(),
-        )
 
-        crawlee_requests = []
-        for query in queries.split(","):
-            # Prepare a POST request to the form endpoint.
-            request = Request.from_url(
-                url='https://business.egov.mv/BusinessRegistry/SearchBusinessRegistry',
-                method='POST',
-                headers={'content-type': 'application/x-www-form-urlencoded'},
-                use_extended_unique_key=True,
-                payload=urlencode(
-                    {
-                        'query': f'{query}',
-                    }
-                ).encode(),
-            )
-            crawlee_requests.append(request)
+    crawler = HttpCrawler(
+        request_handler=router,
+        max_requests_per_crawl=max_requests,
+        http_client=HttpxHttpClient(),
+    )
 
-        await crawler.run(
-            crawlee_requests
+    crawlee_requests = []
+    for query in queries.split(","):
+        # Prepare a POST request to the form endpoint.
+        request = Request.from_url(
+            url='https://business.egov.mv/BusinessRegistry/SearchBusinessRegistry',
+            method='POST',
+            headers={'content-type': 'application/x-www-form-urlencoded'},
+            use_extended_unique_key=True,
+            payload=urlencode(
+                {
+                    'query': f'{query}',
+                }
+            ).encode(),
         )
+        crawlee_requests.append(request)
 
-        await crawler.export_data_csv(
-            dataset_name="Businesses",
-            path="businesses.csv",
-        )
+    await crawler.run(
+        crawlee_requests
+    )
+
+    await crawler.export_data_csv(
+        dataset_name="Businesses",
+        path="businesses.csv",
+    )
