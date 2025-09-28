@@ -2,20 +2,13 @@
 
 [![Maldives Business Registry Scraper](https://apify.com/actor-badge?actor=fauzaanu/maldives-business-registry-scraper)](https://apify.com/fauzaanu/maldives-business-registry-scraper)
 
-A crawler to scrape business details from https://business.egov.mv/BusinessRegistry. 
+A crawler to scrape business details from [Maldives Business Registry](https://business.egov.mv/BusinessRegistry. )
 
-Make sure you have [UV Installed](https://docs.astral.sh/uv/getting-started/installation/), and run `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git brs "Business one, Business two, Business three"` and get a detailed csv export file at the very end ("businesses.csv"). 
+Make sure you have [UV Installed](https://docs.astral.sh/uv/getting-started/installation/), then run `uvx --from git+https://github.com/fauzaanu/maldives-business-registry-scraper.git brs "Business one, Business two, Business three"` and get a detailed csv export file at the very end : `businesses.csv`
 
 If you choose to [install](#Installing-CLI) the command is as short as running `brs "<comma_seperated_search_terms>"`
 
 You may also run this as an [actor on the Apify Platform](https://apify.com/fauzaanu/maldives-business-registry-scraper)
-
-## Use cases
-
-- You can pass this to an AI Agent and let it determine which businesses to search for depending on a workflow you create or a list of business names. 
-- You can also use this to search whether your new business names were taken or has similiar ones.
-- You can also use this as an OSINT tool
-
 
 ### Output sample
 
