@@ -10,6 +10,12 @@ If you choose to [install](#Installing-CLI) the command is as short as running `
 
 You may also run this as an [actor on the Apify Platform](https://apify.com/fauzaanu/maldives-business-registry-scraper)
 
+### Options
+
+`--exact-match-only` can be passed to only add exact matches to the dataset. For instance if you know the exact business name (case-insensitive) you can pass this flag to ensure that other random companies don't get added up even if they were found on the search results.
+
+
+
 ### Output sample
 
 > The actual datafiles will have the following structure, The CLI also does an export of all the datafiles combined in one CSV at the very end for convenience.
