@@ -14,6 +14,8 @@ You may also run this as an [actor on the Apify Platform](https://apify.com/fauz
 
 `--exact-match-only` can be passed to only add exact matches to the dataset. For instance if you know the exact business name (case-insensitive) you can pass this flag to ensure that other random companies don't get added up even if they were found on the search results.
 
+> If you run this from the apify platform there will be an option available for the same behaviour as an input
+
 
 
 ### Output sample
