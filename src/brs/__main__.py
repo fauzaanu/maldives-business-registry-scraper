@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import logging
 import os
 import sys
 
@@ -27,10 +28,24 @@ async def main():
         action='store_true',
         help='Only save businesses that exactly match the search queries'
     )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Show detailed crawlee/apify logs'
+    )
     
     args = parser.parse_args()
-    
-    async with Actor:
+    is_cli = not args.apify
+    quiet = is_cli and not args.verbose
+
+    # Suppress all crawlee/apify internal logging in CLI quiet mode
+    if quiet:
+        import warnings
+        warnings.filterwarnings('ignore')
+        for name in ('crawlee', 'apify', 'apify_client', 'httpx', 'httpcore'):
+            logging.getLogger(name).setLevel(logging.CRITICAL)
+
+    async with Actor(configure_logging=not quiet):
         if args.apify:
             # Apify mode - get input from Apify platform
             actor_input = await Actor.get_input() or {}
@@ -48,8 +63,7 @@ async def main():
             if max_requests:
                 Actor.log.info(f'Max requests per crawl: {max_requests}')
         else:
-            # CLI mode - get queries from arguments or environment
-            print("Running in CLI Mode . . ")
+            # CLI mode
             queries = args.queries or os.getenv("QUERIES")
             max_requests = None
             exact_match_only = args.exact_match_only
@@ -57,16 +71,13 @@ async def main():
             
             if not queries:
                 print("Error: No queries provided. Use either:")
-                print("  uv run python -m crawler 'query1,query2,query3'")
+                print('  brs "company1,company2"')
                 print("  or set QUERIES environment variable")
                 exit(1)
         
         # Import and call the crawler main function
         from .main import main as crawler_main
-        if args.apify:
-            await crawler_main(queries, max_requests, exact_match_only, queries_list)
-        else:
-            await crawler_main(queries, max_requests, exact_match_only, queries_list)
+        await crawler_main(queries, max_requests, exact_match_only, queries_list, quiet=quiet)
         
         if args.apify:
             Actor.log.info('Scraper completed successfully!')

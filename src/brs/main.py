@@ -1,4 +1,5 @@
 import csv
+import logging
 import os
 from urllib.parse import urlencode
 from crawlee import Request
@@ -12,15 +13,35 @@ from dotenv import load_dotenv
 from .routes import router
 
 
-async def main(queries: str, max_requests: int = None, exact_match_only: bool = False, queries_list: list = None) -> None:
+def _quiet_logging() -> None:
+    """Suppress noisy crawlee/apify internals for CLI usage."""
+    for name in (
+        'crawlee',
+        'apify',
+        'apify_client',
+        'httpx',
+        'httpcore',
+        'pydantic',
+    ):
+        logging.getLogger(name).setLevel(logging.ERROR)
+    # Also suppress the pydantic serialization warnings
+    import warnings
+    warnings.filterwarnings('ignore', module='pydantic')
+
+
+async def main(queries: str, max_requests: int = None, exact_match_only: bool = False, queries_list: list = None, *, quiet: bool = False) -> None:
     """The crawler entry point."""
     if not queries:
         raise Exception("No queries provided")
+
+    if quiet:
+        _quiet_logging()
 
     crawler = HttpCrawler(
         request_handler=router,
         max_requests_per_crawl=max_requests,
         http_client=HttpxHttpClient(),
+        configure_logging=not quiet,
     )
 
     # Store exact match configuration in request user_data
@@ -59,3 +80,7 @@ async def main(queries: str, max_requests: int = None, exact_match_only: bool = 
             writer = csv.DictWriter(csvfile, fieldnames=items[0].keys())
             writer.writeheader()
             writer.writerows(items)
+        if quiet:
+            print(f"Saved {len(items)} business(es) to businesses.csv")
+    elif quiet:
+        print("No results found")

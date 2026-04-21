@@ -450,15 +450,11 @@ class RichDataExtractor:
             html_content = (await context.http_response.read()).decode('utf-8')
             source_url = str(context.request.url)
 
-            context.log.info(f"Extracting data from {source_url}")
-
             # Check if this is a search results page or detail page
             if '/SearchBusinessRegistry' in source_url:
                 businesses = self.business_extractor.extract_business_listings(html_content, source_url)
-                if businesses:
-                    context.log.info(f"Extracted {len(businesses)} businesses")
-                else:
-                    context.log.warning("No businesses extracted from search results")
+                if not businesses:
+                    pass  # routes.py handles the "no results" message
 
             elif '/ViewDetails/' in source_url:
                 detail_data = self.business_extractor.extract_business_details(html_content, source_url)
@@ -475,22 +471,17 @@ class RichDataExtractor:
                     should_save = True
                     if exact_match_only:
                         should_save = self._is_exact_match(detail_data, exact_queries)
-                        context.log.info(f"EXACT MATCH CHECK: Business '{business_name}' - Exact match enabled: {exact_match_only} - Is exact match: {should_save}")
-                    else:
-                        context.log.info(f"EXACT MATCH CHECK: Business '{business_name}' - Exact match enabled: {exact_match_only} - Saving all results")
                     
                     if should_save:
-                        context.log.info(f"SAVING: Extracted detailed data for: {business_name}")
+                        print(f"  ✓ {business_name}")
                         await Actor.push_data(detail_data)
                     else:
-                        context.log.info(f"SKIPPING: '{business_name}' - not an exact match")
+                        print(f"  ✗ {business_name} (not an exact match)")
                 else:
-                    context.log.warning("No detail data extracted")
-            else:
-                context.log.warning(f"Unknown page type: {source_url}")
+                    print("  ✗ Could not extract details")
 
         except Exception as e:
-            context.log.error(f"Error during data extraction: {e}")
+            print(f"  ✗ Error: {e}")
             import datetime
             await Actor.push_data({
                 'error': str(e),
