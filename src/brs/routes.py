@@ -21,7 +21,11 @@ async def default_handler(context: HttpCrawlingContext) -> None:
         print(f'Fetching business details...')
 
     # Get exact match configuration from request user_data
-    exact_match_config = context.request.user_data or {}
+    raw_user_data = context.request.user_data or {}
+    exact_match_config = {
+        'exact_match_only': raw_user_data.get('exact_match_only', False),
+        'exact_queries': raw_user_data.get('exact_queries', []),
+    }
     
     # Extract and save rich data to dataset
     await extractor.extract_and_save(context, exact_match_config)
@@ -36,7 +40,13 @@ async def default_handler(context: HttpCrawlingContext) -> None:
             print(f"Found {len(detail_urls)} business(es)")
             # Pass exact match configuration to detail page requests
             await context.add_requests([
-                Request.from_url(url, user_data=exact_match_config) for url in detail_urls
+                Request.from_url(
+                    detail_url,
+                    user_data={
+                        'exact_match_only': exact_match_config.get('exact_match_only', False),
+                        'exact_queries': list(exact_match_config.get('exact_queries', [])),
+                    },
+                ) for detail_url in detail_urls
             ])
         else:
             print("No businesses found for this query")
