@@ -447,7 +447,7 @@ class RichDataExtractor:
             exact_match_config = {}
         try:
             # Get HTML content
-            html_content = context.http_response.read().decode('utf-8')
+            html_content = (await context.http_response.read()).decode('utf-8')
             source_url = str(context.request.url)
 
             context.log.info(f"Extracting data from {source_url}")

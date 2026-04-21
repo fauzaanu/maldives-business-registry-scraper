@@ -23,7 +23,7 @@ async def default_handler(context: HttpCrawlingContext) -> None:
     
     # If this is a search results page, enqueue detail pages for deeper crawling
     if '/SearchBusinessRegistry' in str(context.request.url):
-        html_content = context.http_response.read().decode('utf-8')
+        html_content = (await context.http_response.read()).decode('utf-8')
         businesses = business_extractor.extract_business_listings(html_content, str(context.request.url))
         
         detail_urls = [b['detail_url'] for b in businesses if b.get('detail_url')]
